@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Functional Password Generator</title>
+        <style>
+            * {
+                box-sizing: border-box;
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            html,body,.container {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                margin: 0px;
+                padding: 0px;
+            }
+
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .password {
+                background-color: #333;
+                color: #fff;
+                padding: 2rem;
+                border-radius: 0.5rem;
+                margin: 1rem 0px;
+                max-width: 100%;
+            }
+            h1 {
+                text-align: center;
+                font-size: 2rem;
+            }
+            h1 span {
+                font-size: 3rem;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1><span>F</span>unctional <span>P</span>assword <span>G</span>enerator</h1>
+            <div class="counter">
+                <span>Number of passwords:</span>
+                <input type="number" class="count" value="1"/>
+            </div>
+            <div class="password">pw</div>
+            <button class="pwgen">Generate</button>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+        <script>
+            (() => {
+                var gen = (count = 1) => {
+                    document.querySelector(".password").innerHTML = "";
+
+                    for(var i = 0; i < count; i++){
+
+                        var pass = CryptoJS.MD5(((new Date()).valueOf() + i).toString()).toString();
+                        var limiter = Math.floor(Math.random() * (16 - 3 + 1) + 3);
+                        var sanitizedPass = pass.substring(0,limiter).toUpperCase() + "." + pass.substring(limiter).toLowerCase();
+                        document.querySelector(".password").innerHTML += "<div>" + sanitizedPass + "</div>";
+                    }
+                };
+
+                document.querySelector(".pwgen").addEventListener('click', () => {gen(document.querySelector(".count").value)});
+
+                gen();
+            })();
+        </script>
+    </body>
+</html>
